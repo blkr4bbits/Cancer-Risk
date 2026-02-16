@@ -7,15 +7,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+
+
 x  = torch.tensor([2.5, 0.1])
-print(x)
+print(x ,"\n \n")
 
-file_path = r"C:\Users\Joshua Green\OneDrive\Desktop\Leukemia_GSE9476.csv"
 
-df = pd.read_csv(file_path)
+leukemia_data = "Leukemia_GSE9476.csv"
+df = pd.read_csv(leukemia_data)
 
-print("First 5 records:", df.head())
+data = df.head()
+print(f"Overall data: \n \n")
+print(data)
 
-y = torch.tensor(df.values, dtype=torch.float32)
+if df.columns[0].lower() in ["id", "sample", "unnamed: 0"]:
+    df = df.iloc[:, 1:]
 
-print("Tensor shape:", y.shape)
+matrix_of_data = df.iloc[:3, :6] # [:y :x]
+
+print(f"Matrix subset of Dataset: \n \n")
+print(matrix_of_data)
