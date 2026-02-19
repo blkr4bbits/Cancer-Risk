@@ -5,10 +5,10 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 import pandas as pd
 import matplotlib.pyplot as plt
-import time
 from statsmodels.miscmodels.ordinal_model import OrderedModel
+import statsmodels.api as sm
 
-
+from sklearn.linear_model import Ridge
 
 #x  = torch.tensor([2.5, 0.1])
 #print(x ,"\n \n")
@@ -51,9 +51,27 @@ print(f"Matrix subset of Dataset: \n \n")
 print(matrix_of_data)
 
 
+print('\n \n \n')
 
 
-data['sample1'].dtypes
+X = df.iloc[:, 2:10]   # first 8 gene columns
+y = df['type'].astype('category').cat.codes
 
 
-mod_ord = OrderedModel()
+# attempting ridge regression model to predict the effect leukemia has on gene expression levels
+
+X = sm.add_constant(X)
+
+model = sm.OLS(y, X)
+results = model.fit()
+
+print(results.summary())
+
+
+model = Ridge(alpha=1.0)
+model.fit(X, y)
+
+print(model.coef_)
+
+for gene, coef in zip(X.columns, model.coef_):
+    print(gene, coef)
