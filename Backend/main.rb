@@ -1,8 +1,7 @@
-require 'csv'
+post '/predict' do
+  file = params[:file]
 
-CSV.foreach('./dbs/Leukemia_GSE9476.csv', headers: true) do |row|
-    puts row ['age']
-    puts row ['gene data']
-    puts row ['cancer risk assessment number']
+  result = `python3 predictor.py #{file.path}`
+
+  return result
 end
-
